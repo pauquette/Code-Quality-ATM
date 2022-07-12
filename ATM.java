@@ -21,7 +21,7 @@ public class ATM {
 	 /* Method to check the current balance of the account */
 	public double checkBalance() {
 		printBalance();
-		return balance.doubleValue();
+		return Math.round(balance.doubleValue());
 	}
 	
 	/* Method to check the current currency in use */
