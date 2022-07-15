@@ -31,8 +31,14 @@ public class ATM {
 	
 	/* Method to deposit (add) money to the account */
 	public void deposit(double depositAmount) {
+		if(depositAmount >= 0) {
 		System.out.println("Depositing " + depositAmount + " " + currentCurrency);
 		balance += depositAmount;
+		}
+		else
+		{
+			System.out.println("Cannot deposit negative amounts.\nPlease use withdrawal instead");
+		}
 	}
 	
 	/* Method to withdraw (subtract) money from the account */
