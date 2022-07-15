@@ -43,8 +43,17 @@ public class ATM {
 	
 	/* Method to withdraw (subtract) money from the account */
 	public void withdraw(double withdrawalAmount) {
+		if (withdrawalAmount < 0){
+			System.out.println("Cannot withdraw negative amounts.\nPlease use deposit instead");
+			return;
+			
+		}
+		if (balance < withdrawalAmount) {
+			System.out.println("Insufficient funds.");
+			return;
+		}
 		System.out.println("Withdrawing " + withdrawalAmount + " " + currentCurrency);
-		balance--;
+		balance -= withdrawalAmount;
 	}
 	
 	/* Method to convert the current currency to USD, CAD, or EUR */

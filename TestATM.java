@@ -2,7 +2,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 class TestATM {
-	
+
 	//Deposits
 	@Test
 	void testNegativeDeposit() throws Exception {
@@ -23,6 +23,42 @@ class TestATM {
 		ATM atm = new ATM(0, "USD");
 		atm.deposit(5.50);
 		Assert.assertEquals(5.50, atm.checkBalance(), 0.01);
+	}
+	
+	//Withdrawal
+	@Test
+	void testNegativeWithdraw() throws Exception {
+		ATM atm = new ATM(100, "USD");
+		atm.withdraw(-5);
+		Assert.assertEquals(100, atm.checkBalance(), 0.01);
+	}
+	
+	@Test
+	void testIntWithdraw() throws Exception {
+		ATM atm = new ATM(100, "USD");
+		atm.withdraw(5);
+		Assert.assertEquals(95, atm.checkBalance(), 0.01);
+	}
+	
+	@Test
+	void testFloatWithdraw() throws Exception {
+		ATM atm = new ATM(100, "USD");
+		atm.withdraw(5.50);
+		Assert.assertEquals(94.50, atm.checkBalance(), 0.01);
+	}
+	
+	@Test
+	void testEmptyWithdraw() throws Exception {
+		ATM atm = new ATM(0, "USD");
+		atm.withdraw(5.50);
+		Assert.assertEquals(0, atm.checkBalance(), 0.01);
+	}
+	
+	@Test
+	void testBigWithdraw() throws Exception{
+		ATM atm = new ATM(100, "USD");
+		atm.withdraw(500);
+		Assert.assertEquals(100, atm.checkBalance(), 0.01);
 	}
 		
 	//USD To other
