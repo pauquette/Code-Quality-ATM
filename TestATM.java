@@ -70,13 +70,9 @@ class TestATM {
 
 	@Test
 	void testUSDError() throws Exception {
-		try {
-			ATM atm = new ATM(100, "USD");
-			atm.exchangeCurrency("");
-		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(),
-					" is not a supported currency to convert to. Supported currencies are: USD, CAD and EUR");
-		}
+		ATM atm = new ATM(100, "USD");
+		Assert.assertThrows(UnsupportedCurrencyCodeException.class, () ->
+		atm.exchangeCurrency(""));
 	}
 
 	@Test
@@ -105,13 +101,9 @@ class TestATM {
 
 	@Test
 	void testCADError() throws Exception {
-		try {
-			ATM atm = new ATM(100, "CAD");
-			atm.exchangeCurrency("");
-		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(),
-					" is not a supported currency to convert to. Supported currencies are: USD, CAD and EUR");
-		}
+		ATM atm = new ATM(100, "CAD");
+		Assert.assertThrows(UnsupportedCurrencyCodeException.class, () ->
+		atm.exchangeCurrency(""));
 	}
 
 	@Test
@@ -140,13 +132,9 @@ class TestATM {
 
 	@Test
 	void testEURError() throws Exception {
-		try {
-			ATM atm = new ATM(100, "EUR");
-			atm.exchangeCurrency("");
-		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(),
-					" is not a supported currency to convert to. Supported currencies are: USD, CAD and EUR");
-		}
+		ATM atm = new ATM(100, "EUR");
+		Assert.assertThrows(UnsupportedCurrencyCodeException.class, () ->
+		atm.exchangeCurrency(""));
 	}
 
 	@Test
