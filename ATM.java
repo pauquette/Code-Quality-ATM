@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ATM {
 	
-	double balance;
+	BigDecimal balance;
 	String currentCurrency;
 	private final List<String> supportedCurrencyCodeList = Arrays.asList("USD", "CAD", "EUR");
 	
 	/* Class constructor */
 	public ATM(double initialBalance, String currencyCode) throws Exception {
-		balance = initialBalance;
+		balance = BigDecimal.valueOf(initialBalance);
 		if (supportedCurrencyCodeList.contains(currencyCode)) {
 			currentCurrency = currencyCode;
 		} else {
@@ -21,7 +21,7 @@ public class ATM {
 	 /* Method to check the current balance of the account */
 	public double checkBalance() {
 		printBalance();
-		return balance;
+		return balance.doubleValue();
 	}
 	
 	/* Method to check the current currency in use */
@@ -31,22 +31,39 @@ public class ATM {
 	
 	/* Method to deposit (add) money to the account */
 	public void deposit(double depositAmount) {
-		System.out.println("Depositing " + depositAmount + " " + currentCurrency)
-		balance += depositAmount;
+		BigDecimal deposit = BigDecimal.valueOf(depositAmount);
+		if(deposit.compareTo(BigDecimal.ZERO) == 1) { //deposit < 0
+		System.out.println("Depositing " + deposit + " " + currentCurrency);
+		balance = balance.add(deposit);
+		}
+		else
+		{
+			System.out.println("Cannot deposit negative amounts.\nPlease use withdrawal instead");
+		}
 	}
 	
 	/* Method to withdraw (subtract) money from the account */
 	public void withdraw(double withdrawalAmount) {
-		System.out.println("Withdrawing " + withdrawalAmount + " " + currentCurrency);
-		balance--;
+		BigDecimal withdraw = BigDecimal.valueOf(withdrawalAmount);
+		if (withdraw.compareTo(BigDecimal.ZERO) == -1){ //withdraw < 0
+			System.out.println("Cannot withdraw negative amounts.\nPlease use deposit instead");
+			return;
+			
+		}
+		if (balance.compareTo(withdraw) == -1) {
+			System.out.println("Insufficient funds.");
+			return;
+		}
+		System.out.println("Withdrawing " + withdraw + " " + currentCurrency);
+		balance =  balance.subtract(withdraw);
 	}
 	
 	/* Method to convert the current currency to USD, CAD, or EUR */
 	public void exchangeCurrency(String desiredCurrency) throws Exception {
 		CurrencyExchanger exchanger = new CurrencyExchanger();
-		double exchangeRate = exchanger.getExchangeRate(currentCurrency, desiredCurrency);
+		BigDecimal exchangeRate = BigDecimal.valueOf(exchanger.getExchangeRate(currentCurrency, desiredCurrency));
 		currentCurrency = desiredCurrency;
-		balance *= balance;
+		balance = balance.multiply(exchangeRate);
 	}
 	
 	/* Helper method that prints the current balance.
