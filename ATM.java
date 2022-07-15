@@ -31,7 +31,7 @@ public class ATM {
 	
 	/* Method to deposit (add) money to the account */
 	public void deposit(double depositAmount) {
-		System.out.println("Depositing " + depositAmount + " " + currentCurrency)
+		System.out.println("Depositing " + depositAmount + " " + currentCurrency);
 		balance += depositAmount;
 	}
 	
@@ -46,7 +46,7 @@ public class ATM {
 		CurrencyExchanger exchanger = new CurrencyExchanger();
 		double exchangeRate = exchanger.getExchangeRate(currentCurrency, desiredCurrency);
 		currentCurrency = desiredCurrency;
-		balance *= balance;
+		balance = balance * exchangeRate;
 	}
 	
 	/* Helper method that prints the current balance.
