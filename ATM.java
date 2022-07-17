@@ -4,16 +4,17 @@ import java.util.List;
 
 public class ATM {
 	
-	double balance;
+	BigDecimal balance;
 	String currentCurrency;
 	private final List<String> supportedCurrencyCodeList = Arrays.asList("USD", "CAD", "EUR");
 	
 	/* Class constructor */
 	public ATM(double initialBalance, String currencyCode) throws Exception {
-		balance = initialBalance;
+		balance = BigDecimal.valueOf(initialBalance);
 		if (supportedCurrencyCodeList.contains(currencyCode)) {
 			currentCurrency = currencyCode;
-		} else {
+		} 
+		else {
 			throw new UnsupportedCurrencyCodeException(currencyCode + " is not a supported currency. Supported currencies are " + supportedCurrencyCodeList.toString());
 		}
 	}
@@ -21,7 +22,7 @@ public class ATM {
 	 /* Method to check the current balance of the account */
 	public double checkBalance() {
 		printBalance();
-		return balance;
+		return balance.doubleValue();
 	}
 	
 	/* Method to check the current currency in use */
@@ -30,15 +31,28 @@ public class ATM {
 	}
 	
 	/* Method to deposit (add) money to the account */
-	public void deposit(double depositAmount) {
-		System.out.println("Depositing " + depositAmount + " " + currentCurrency)
-		balance += depositAmount;
+	public void deposit(double depositAmount) throws NegativeCurrencyException {
+		if (depositAmount >= 0) {
+			BigDecimal deposit = BigDecimal.valueOf(depositAmount);
+			System.out.println("Depositing " + deposit + " " + currentCurrency);
+			balance = balance.add(deposit);
+		}
+		else {
+			throw new NegativeCurrencyException("Cannot deposit negative money");
+		}
+		
 	}
 	
 	/* Method to withdraw (subtract) money from the account */
-	public void withdraw(double withdrawalAmount) {
-		System.out.println("Withdrawing " + withdrawalAmount + " " + currentCurrency);
-		balance--;
+	public void withdraw(double withdrawalAmount) throws NegativeCurrencyException{
+		if (withdrawalAmount > 0) {
+			BigDecimal withdraw = BigDecimal.valueOf(withdrawalAmount);
+			System.out.println("Withdrawing " + withdrawalAmount + " " + currentCurrency);
+			balance = balance.subtract(withdraw);
+		}
+		else {
+			throw new NegativeCurrencyException("Cannot withdraw negative money");
+		}
 	}
 	
 	/* Method to convert the current currency to USD, CAD, or EUR */
@@ -46,7 +60,8 @@ public class ATM {
 		CurrencyExchanger exchanger = new CurrencyExchanger();
 		double exchangeRate = exchanger.getExchangeRate(currentCurrency, desiredCurrency);
 		currentCurrency = desiredCurrency;
-		balance *= balance;
+		BigDecimal rate = BigDecimal.valueOf(exchangeRate);
+		balance = balance.multiply(rate);
 	}
 	
 	/* Helper method that prints the current balance.
